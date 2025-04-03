@@ -48,7 +48,7 @@ pipeline {
 
     post {
         always {
-            echo "Terminé!"
+            echo "Terminé!!!"
         }
     }
 
