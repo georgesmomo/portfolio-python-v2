@@ -17,8 +17,18 @@ pipeline {
                 checkout scm
             }
         }
-    }
+
         stage("Build the docker image"){
+            steps{
+                script {
+                    sh """
+                        docker build -t ${IMAGE_NAME}:latest
+                    """
+                }
+            }
+        }
+
+        stage("Push docker image to docker hub"){
             steps{
                 script {
                     sh """
@@ -28,7 +38,6 @@ pipeline {
             }
         }
 
-
-    
+    }
 
 }
