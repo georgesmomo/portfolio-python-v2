@@ -1,12 +1,14 @@
-
+// Jenkinsfile - Pipeline declaratif pour le déploiement automatique
 pipeline {
-    agent any // ce pipeline peut être exécuté sur n'importe quel agent Jenkins disponible,
+    agent any   // Le pipeline peut s'exécuter sur n'importe quel agent Jenkins disponible
 
     environment {
-        DOCKERHUB_USER = "georgesmomo" // le nom d'utilisateur docker hub
-        IMAGE_NAME = "${DOCKERHUB_USER/porfolio-python-v2}" // le nom de l'image docker à créer et pousser sur le hub
-        GITHUB_CREDENTIALS = credentials("GITHUB_CREDENTIALS_DEVOPS") // on recupere les credentials github avec la fonction credentials
-        DOCKERHUB_CREDENTIALS = credentials("dockerhub_credentials")
+        // Variables globales du pipeline 
+        DOCKERHUB_USER = "georgesmomo"    // Nom d'utilisateur Docker Hub
+        IMAGE_NAME = "${DOCKERHUB_USER}/portfolio-python"
+        // Les credentials pour GitHub et Docker Hub sont définis dans Jenkins   
+        GITHUB_CREDENTIALS = credentials('GITHUB_CREDENTIALS_DEVOPS')
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub_credentials')
         NODEPORT = "30101"
         REPLICAS = "3"
     }
