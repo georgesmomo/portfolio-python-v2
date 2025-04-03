@@ -14,7 +14,7 @@ pipeline {
         stage('Checkout code source2') {
             steps {
                 // on recupere le code source de github 
-                checkout scm
+                echo "test..."
             }
         }
         stage('Checkout code source') {
