@@ -11,14 +11,14 @@ pipeline {
     }
 
     stages{
-        stage("Checkout code source"){
+        stage('Checkout code source'){
             steps{
                 // on recupere le code source de github 
                 checkout scm
             }
         }
 
-        stage("Build the docker image"){
+        stage('Build the docker image'){
             steps{
                 script {
                     sh """
@@ -38,6 +38,12 @@ pipeline {
             }
         }
 
+    }
+    
+    post {
+        always {
+            echo "Terminé!"
+        }
     }
 
 }
