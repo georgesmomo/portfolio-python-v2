@@ -10,24 +10,26 @@ pipeline {
         REPLICAS = "3"
     }
 
-    stages{
-        stage('Checkout code source'){
-            steps{
+    stages {
+        stage('Checkout code source') {
+            steps {
                 // on recupere le code source de github 
                 checkout scm
             }
         }
 
-        stage('Build the docker image'){
-            steps{
+        stage('Build the docker image') {
+            steps {
                 script {
-                    echo "Build image"
+                    sh """
+                        docker build -t ${IMAGE_NAME}:latest .
+                    """
                 }
             }
         }
 
-        stage("Push docker image to docker hub"){
-            steps{
+        stage("Push docker image to docker hub") {
+            steps {
                 script {
                     sh """
                         echo "${DOCKERHUB_CREDENTIALS_PSW}" | docker login -u "${DOCKERHUB_CREDENTIALS_USR}" --password-stdin
