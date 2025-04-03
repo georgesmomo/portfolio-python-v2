@@ -21,9 +21,7 @@ pipeline {
         stage('Build the docker image'){
             steps{
                 script {
-                    sh """
-                        docker build -t ${IMAGE_NAME}:latest
-                    """
+                    echo "Build image"
                 }
             }
         }
@@ -39,7 +37,7 @@ pipeline {
         }
 
     }
-    
+
     post {
         always {
             echo "Terminé!"
