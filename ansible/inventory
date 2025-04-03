@@ -1,0 +1,4 @@
+# Fichier d'inventaire Ansible
+# Le groupe [master] contient le serveur master de Kubernetes sur lequel on déploie.
+[master]
+207.180.212.38 ansible_user=root ansible_ssh_private_key_file=~/.ssh/id_rsa_kubernetes
