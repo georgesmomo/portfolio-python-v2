@@ -17,7 +17,12 @@ pipeline {
                 checkout scm
             }
         }
-
+        stage('Checkout code source2') {
+            steps {
+                // on recupere le code source de github 
+                checkout scm
+            }
+        }
         stage('Build the docker image') {
             steps {
                 script {
