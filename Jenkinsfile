@@ -47,6 +47,7 @@ pipeline {
                         cp k8s/deployment.yaml k8s/deployment_tmp.yaml
                         sed -i 's/{{replicas}}/$REPLICAS/g' k8s/deployment_tmp.yaml
                         sed -i 's/{{nodeport}}/$NODEPORT/g' k8s/deployment_tmp.yaml
+                        cat k8s/deployment_tmp.yaml
                     """
                 }
             }
