@@ -11,12 +11,7 @@ pipeline {
     }
 
     stages {
-        stage('Checkout code source2') {
-            steps {
-                // on recupere le code source de github 
-                echo "test..."
-            }
-        }
+
         stage('Checkout code source') {
             steps {
                 // on recupere le code source de github 
@@ -39,6 +34,19 @@ pipeline {
                 script {
                     sh """
                         echo "${DOCKERHUB_CREDENTIALS_PSW}" | docker login -u "${DOCKERHUB_CREDENTIALS_USR}" --password-stdin
+                        docker push ${IMAGE_NAME}:latest
+                    """
+                }
+            }
+        }
+
+        stage("Prepare kubernetes Deployment files"){
+            steps{
+                script{
+                    sh """
+                        cp k8s/deployment.yaml k8s/deployment_tmp.yaml
+                        sed -i 's/{{replicas}}/$REPLICAS/g' k8s/deployment_tmp.yaml
+                        sed -i 's/{{nodeport}}/$NODEPORT/g' k8s/deployment_tmp.yaml
                     """
                 }
             }

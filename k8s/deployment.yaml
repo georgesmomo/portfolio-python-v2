@@ -6,7 +6,7 @@ kind: Deployment
 metadata:
   name: portfolio-app
 spec:
-  replicas: {{ replicas }}    # Variable : 1 pour develop, 2 pour main
+  replicas: {{replicas}}    # Variable : 1 pour develop, 2 pour main
   selector:
     matchLabels:
       app: portfolio
@@ -46,7 +46,7 @@ spec:
   - protocol: TCP
     port: 5000       # Port interne du service (lié au containerPort)
     targetPort: 5000
-    nodePort: {{ nodeport }}   # Variable : 30099 pour develop, 30100 pour main
+    nodePort: {{nodeport}}   # Variable : 30099 pour develop, 30100 pour main
 ---
 # ============================================================
 # Déploiement de la base de données MySQL
