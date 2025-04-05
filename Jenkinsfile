@@ -56,6 +56,7 @@ pipeline {
         stage("Deploy Kubernetes Deployment via Ansible"){
             steps{
                 script{
+                    echo "Playbook ansible"
                     //sh """
                       //  ansible-playbook -i ansible/inventory ansible/playbook.yml
                    // """
