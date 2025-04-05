@@ -14,12 +14,12 @@ spec:
   template:
     metadata:
       labels:
-        app: portfolio-v2-template
+        app: portfolio-v2-app
     spec:
       containers:
         - name: portfolio-v2-app
           image: georgesmomo/portfolio-python-v2:latest
-          imagePullPolicy: Alway
+          imagePullPolicy: Always
           env:
             - name: ENVIRONMENT
               value: "production"
@@ -37,7 +37,7 @@ spec:
               memory: "256Mi"
             limits:
               cpu: "500m"
-              memoty: "500Mi"
+              memory: "500Mi"
           ports: 
             - containerPort: 5000
 
