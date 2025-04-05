@@ -60,7 +60,7 @@ pipeline {
                     //echo "Playbook ansible"
                     whoami
                     pwd
-                    ls -rtl ~
+                    ls -rtl .
                     sh """
                         ansible-playbook -i ansible/inventory ansible/playbook.yml
                     """
