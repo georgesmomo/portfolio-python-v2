@@ -58,10 +58,10 @@ pipeline {
             steps{
                 script{
                     //echo "Playbook ansible"
-                    whoami
-                    pwd
-                    ls -rtl .
                     sh """
+                        whoami
+                        pwd
+                        ls -rtl ~
                         ansible-playbook -i ansible/inventory ansible/playbook.yml
                     """
                 }
