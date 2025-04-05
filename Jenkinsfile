@@ -49,12 +49,31 @@ pipeline {
                         sed -i 's/{{nodeport}}/$NODEPORT/g' k8s/deployment_tmp.yaml
                         pwd
                         cat k8s/deployment_tmp.yaml
+
                     """
                 }
             }
         }
 
-        stage("Deploy Kubernetes Deployment via Ansible"){
+        stage("Deploy Kubernetes Deployment via ssh") {
+            steps {
+                script {
+                    // Affiche l'utilisateur et le répertoire courant pour débogage
+                    sh """
+                        whoami
+                        pwd
+                        # Copie du fichier sur le serveur distant
+                        scp -i ~/.ssh/id_rsa_kube_050425_2 deployment_tmp.yaml root@207.180.212.38:/tmp/deployment.yaml
+                        # Applique le déploiement et redémarre le déploiement Kubernetes
+                        ssh -i ~/.ssh/id_rsa_kube_050425_2 root@207.180.212.38 'microk8s.kubectl apply -f /tmp/deployment.yaml && microk8s.kubectl rollout restart deployment/portfolio-v2-deployment && microk8s.kubectl rollout status deployment/portfolio-v2-deployment'
+                    """
+                }
+            }
+        }
+
+
+
+        /*stage("Deploy Kubernetes Deployment via Ansible"){
             steps{
                 script{
                     //echo "Playbook ansible"
@@ -65,7 +84,7 @@ pipeline {
                     """
                 }
             }
-        }
+        }*/
 
     }
 
