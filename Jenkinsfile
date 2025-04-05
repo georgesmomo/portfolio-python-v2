@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKERHUB_USER = "georgesmomo" // le nom d'utilisateur docker hub
-        IMAGE_NAME = "${DOCKERHUB_USER}/porfolio-python-v2" // le nom de l'image docker à créer et pousser sur le hub
+        IMAGE_NAME = "${DOCKERHUB_USER}/portfolio-python-v2" // le nom de l'image docker à créer et pousser sur le hub
         GITHUB_CREDENTIALS = credentials("GITHUB_CREDENTIALS_DEVOPS") // on recupere les credentials github avec la fonction credentials
         DOCKERHUB_CREDENTIALS = credentials("dockerhub_credentials")
         NODEPORT = "30101"
