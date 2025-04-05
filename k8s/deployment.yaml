@@ -1,102 +1,96 @@
----
-# On deploie l'application python Portfolio V2
+# ============================================================
+# Déploiement de l'application portfolio
+# ============================================================
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: portfolio-v2-deployment
-  labels:
-    app: portfolio-v2
-spec: 
-  replicas: {{replicas}}
+  name: portfolio-app-v2
+spec:
+  replicas: {{replicas}}    # Variable : 1 pour develop, 2 pour main
   selector:
     matchLabels:
-      app: portfolio-v2-app
+      app: portfolio-v2
   template:
     metadata:
       labels:
-        app: portfolio-v2-app
+        app: portfolio-v2
     spec:
       containers:
-        - name: portfolio-v2-app
-          image: georgesmomo/portfolio-python-v2:latest
-          imagePullPolicy: Always
-          env:
-            - name: ENVIRONMENT
-              value: "production"
-            - name: DB_HOST
-              value: "portfolio-v2-mysql-service"
-            - name: DB_USER
-              value: "portfolio_user"
-            - name: DB_PASS
-              value: "portfolio_pass"
-            - name: DB_NAME
-              value: "portfolio_db"
-          resources:
-            requests:
-              cpu: "100m" #100 milli core, 100/1000 = 0.1 core, = 10%core
-              memory: "256Mi"
-            limits:
-              cpu: "500m"
-              memory: "500Mi"
-          ports: 
-            - containerPort: 5000
-
+      - name: portfolio-v2
+        image: georgesmomo/portfolio-python-v2:latest   # Image Docker sur Docker Hub (utilisateur : georgesmomo)
+        imagePullPolicy: Always  # Ajoute cette ligne pour toujours deployer
+        ports:
+        - containerPort: 5000   # Port exposé par l'application dans le conteneur
+        env:
+        - name: DB_HOST
+          value: "mysql-service-v2"  # Nom du service Kubernetes pour MySQL
+        - name: DB_USER
+          value: "portfolio_user" # Utilisateur MySQL (défini dans le code)
+        - name: DB_PASS
+          value: "portfolio_pass" # Mot de passe MySQL
+        - name: DB_NAME
+          value: "portfolio_db"   # Nom de la base de données
 ---
-# service de l'application
-apiVersion: v1
-kind: Service
-metadata: 
-  name: portfolio-v2-app-service
-spec:
-  type: NodePort
-  selector:
-    app: portfolio-v2-app
-  ports:
-    - protocol: TCP
-      port: 5000 # port du service
-      targetPort: 5000 # port du container, le port qu'on cible
-      nodePort: {{nodeport}}
----
-
-apiVersion: apps/v1
-kind: Deployment
-metadata: 
-  name: portfolio-v2-mysql-deployment
-spec:
-  replicas: 1
-  selector: 
-    matchLabels:
-      app: portfolio-v2-mysql
-  template:
-    metadata:
-      labels: 
-        app: portfolio-v2-mysql
-    spec:
-      containers:
-        - name: portfolio-v2-mysql
-          image: mysql:5.7
-          env:
-            - name: MYSQL_ROOT_PASSWORD
-              value: "rootpass"
-            - name: MYSQL_DATABASE
-              value: "portfolio_db"
-            - name: MYSQL_USER
-              value: "portfolio_user"
-            - name: MYSQL_PASSWORD
-              value: "portfolio_pass" 
-          ports:
-            - containerPort: 3306
-
----
-# le service de la base de données mysql
+# ============================================================
+# Service pour exposer l'application portfolio
+# ============================================================
 apiVersion: v1
 kind: Service
 metadata:
-  name: portfolio-v2-mysql-service
-spec: 
+  name: portfolio-service-v2
+spec:
+  type: NodePort   # Permet d'exposer l'application sur un port du noeud
   selector:
-    app: portfolio-v2-mysql
+    app: portfolio-v2
   ports:
-    - protocol: TCP
-      port: 3306
-      targetPort: 3306
+  - protocol: TCP
+    port: 5000       # Port interne du service (lié au containerPort)
+    targetPort: 5000
+    nodePort: {{nodeport}}   # Variable : 30099 pour develop, 30100 pour main
+---
+# ============================================================
+# Déploiement de la base de données MySQL
+# ============================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment-v2
+spec:
+  replicas: 1    # Un pod dédié pour MySQL
+  selector:
+    matchLabels:
+      app: mysql-v2
+  template:
+    metadata:
+      labels:
+        app: mysql-v2
+    spec:
+      containers:
+      - name: mysql-v2
+        image: mysql:5.7   # Image officielle MySQL
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "rootpass"   # Mot de passe root de MySQL
+        - name: MYSQL_DATABASE
+          value: "portfolio_db"   # Base de données à créer
+        - name: MYSQL_USER
+          value: "portfolio_user" # Utilisateur de la base
+        - name: MYSQL_PASSWORD
+          value: "portfolio_pass" # Mot de passe de l'utilisateur
+        ports:
+        - containerPort: 3306  # Port standard de MySQL
+---
+# ============================================================
+# Service pour exposer MySQL aux autres pods
+# ============================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service-v2
+spec:
+  selector:
+    app: mysql-v2
+  ports:
+  - protocol: TCP
+    port: 3306        # Port interne du service
+    targetPort: 3306
