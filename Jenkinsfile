@@ -61,7 +61,6 @@ pipeline {
                     sh """
                         whoami
                         pwd
-                        ls -rtl ~
                         ansible-playbook -i ansible/inventory ansible/playbook.yml
                     """
                 }
@@ -72,7 +71,8 @@ pipeline {
 
     post {
         always {
-            echo "Terminé!!!"
+            cleanWs()
+            echo "Dossier de travail nettoyé. Terminé!!!"
         }
     }
 
