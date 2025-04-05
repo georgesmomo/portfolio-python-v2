@@ -53,6 +53,16 @@ pipeline {
             }
         }
 
+        stage("Deploy Kubernetes Deployment via Ansible"){
+            steps{
+                script{
+                    //sh """
+                      //  ansible-playbook -i ansible/inventory ansible/playbook.yml
+                   // """
+                }
+            }
+        }
+
     }
 
     post {

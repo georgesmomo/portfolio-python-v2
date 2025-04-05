@@ -88,7 +88,7 @@ def index():
     <html>
     <head>
         <meta charset="utf-8">
-        <title>Portfolio DevOps - Georges Momo</title>
+        <title>Portfolio DevOps - Georges Momo - V2</title>
         <style>
             /* Styles CSS pour un rendu moderne et captivant */
             body {{
@@ -119,7 +119,7 @@ def index():
     </head>
     <body>
         <div class="header">
-            <h1>Georges Momo - Ingénieur Java - DevOps</h1>
+            <h1>Georges Momo - Ingénieur Java - DevOps !!!</h1>
             <p>9 ans d'expérience - Expert en déploiement, CI/CD, Cloud et automatisation</p>
         </div>
         <div class="content">
