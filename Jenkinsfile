@@ -63,7 +63,7 @@ pipeline {
                         whoami
                         pwd
                         # Copie du fichier sur le serveur distant
-                        scp -i ~/.ssh/id_rsa_kube_050425_2 deployment_tmp.yaml root@207.180.212.38:/tmp/deployment.yaml
+                        scp -i ~/.ssh/id_rsa_kube_050425_2 k8s/deployment_tmp.yaml root@207.180.212.38:/tmp/deployment.yaml
                         # Applique le déploiement et redémarre le déploiement Kubernetes
                         ssh -i ~/.ssh/id_rsa_kube_050425_2 root@207.180.212.38 'microk8s.kubectl apply -f /tmp/deployment.yaml && microk8s.kubectl rollout restart deployment/portfolio-v2-deployment && microk8s.kubectl rollout status deployment/portfolio-v2-deployment'
                     """
