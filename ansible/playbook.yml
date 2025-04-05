@@ -14,4 +14,6 @@
 
     - name: On force le redeploiement
       shell:
-        microk8s.kubectl rollout restart deployment/portfolio-app-v2
+        microk8s.kubectl rollout status deployment/portfolio-v2-deployment
+        microk8s.kubectl rollout restart deployment/portfolio-v2-deployment
+        microk8s.kubectl rollout status deployment/portfolio-v2-deployment
