@@ -10,7 +10,7 @@ spec:
   replicas: {{replicas}}
   selector:
     matchLabels:
-      app: portfilio-v2-app
+      app: portfolio-v2-app
   template:
     metadata:
       labels:
